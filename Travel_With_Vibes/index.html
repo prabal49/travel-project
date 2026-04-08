@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Travel Booking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>✈️ Flight & 🚆 Train Booking</h2>
+
+        <!-- FLIGHTS -->
+        <h3>✈️ Flights</h3>
+
+        <div class="book">
+            <h4>Delhi → Mumbai</h4>
+            <p>Airline: IndiGo</p>
+            <p>Price: ₹1</p>
+            <button onclick="buyBook('Flight: Delhi to Mumbai', 100)">Book Now</button>
+        </div>
+
+        <div class="book">
+            <h4>Lucknow → Bangalore</h4>
+            <p>Airline: Air India</p>
+            <p>Price: ₹5200</p>
+            <button onclick="buyBook('Flight: Lucknow to Bangalore', 5200)">Book Now</button>
+        </div>
+
+        <!-- TRAINS -->
+        <h3>🚆 Trains</h3>
+
+        <div class="book">
+            <h4>Delhi → Kanpur</h4>
+            <p>Train: Shatabdi Express</p>
+            <p>Price: ₹800</p>
+            <button onclick="buyBook('Train: Delhi to Kanpur', 800)">Book Now</button>
+        </div>
+
+        <div class="book">
+            <h4>Varanasi → Delhi</h4>
+            <p>Train: Rajdhani Express</p>
+            <p>Price: ₹1200</p>
+            <button onclick="buyBook('Train: Varanasi to Delhi', 1200)">Book Now</button>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
