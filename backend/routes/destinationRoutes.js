@@ -2,34 +2,39 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", (req, res) => {
+  const { from, to } = req.query;
 
-  const data = [
+  const trips = [
     {
-      id: 1,
-      name: "Goa",
-      country: "India",
-      avg_cost: 10000,
-      image_url: "https://source.unsplash.com/400x300/?goa"
+      name: "Indigo Flight",
+      from: "DEL",
+      to: "BLR",
+      time: "10:00 AM",
+      price: 4500,
     },
     {
-      id: 2,
-      name: "Manali",
-      country: "India",
-      avg_cost: 8000,
-      image_url: "https://source.unsplash.com/400x300/?manali"
+      name: "Air India",
+      from: "DEL",
+      to: "BLR",
+      time: "6:00 PM",
+      price: 5200,
     },
     {
-      id: 3,
-      name: "Jaipur",
-      country: "India",
-      avg_cost: 6000,
-      image_url: "https://source.unsplash.com/400x300/?jaipur"
-    }
+      name: "Train Express",
+      from: "DEL",
+      to: "BLR",
+      time: "8:00 AM",
+      price: 1200,
+    },
   ];
 
-  const { budget } = req.query;
-
-  const filtered = data.filter(item => item.avg_cost <= budget);
+  // ✅ FIXED FILTER (case-insensitive + safe)
+  const filtered = trips.filter((t) => {
+    return (
+      t.from.toLowerCase() === from?.toLowerCase() &&
+      t.to.toLowerCase() === to?.toLowerCase()
+    );
+  });
 
   res.json(filtered);
 });
