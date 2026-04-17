@@ -2,11 +2,23 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+// ✅ IMAGES
+import goa from "../assets/goa.jpg";
+import manali from "../assets/manali.png";
+import dubai from "../assets/dubai.avif";
+import hero from "../assets/p1.avif";
+import flightImg from "../assets/flight.jpg";
+import trainImg from "../assets/train.jpg";
+import hotelImg from "../assets/hotel.jpg";
+import busImg from "../assets/bus.jpg";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [location, setLocation] = useState("Delhi");
 
-  // ✅ SAMPLE TRIPS (IMPORTANT)
+  // ✅ TRIPS
   const trips = [
     {
       name: "Flight to Goa ✈️",
@@ -14,7 +26,7 @@ const Home = () => {
       to: "GOA",
       time: "10:00 AM",
       price: 3500,
-      img: "https://source.unsplash.com/400x300/?goa",
+      img: goa,
     },
     {
       name: "Train to Manali 🚆",
@@ -22,7 +34,7 @@ const Home = () => {
       to: "MANALI",
       time: "6:00 AM",
       price: 1200,
-      img: "https://source.unsplash.com/400x300/?manali",
+      img: manali,
     },
     {
       name: "Flight to Dubai ✈️",
@@ -30,11 +42,10 @@ const Home = () => {
       to: "DXB",
       time: "8:00 PM",
       price: 12000,
-      img: "https://source.unsplash.com/400x300/?dubai",
+      img: dubai,
     },
   ];
 
-  // ✅ NAVIGATE WITH DATA
   const handleBook = (trip) => {
     navigate(`/book?from=${trip.from}&to=${trip.to}&date=2026-04-15`);
   };
@@ -42,60 +53,86 @@ const Home = () => {
   return (
     <div className="px-6 md:px-12 py-12 max-w-7xl mx-auto">
 
-      {/* HERO CAROUSEL */}
+      {/* HERO */}
       <Swiper
         modules={[Autoplay]}
-        spaceBetween={30}
+        spaceBetween={20}
         slidesPerView={1}
-        autoplay={{ delay: 3000 }}
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false,
+        }}
         loop={true}
       >
         <SwiperSlide>
-          <div className="relative h-[400px] md:h-[500px] rounded-3xl overflow-hidden">
-            <img src="src/assets/p1.avif" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-black/50"></div>
-            <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center px-6">
-              <h1 className="text-3xl md:text-5xl font-bold">
-                Explore the World 🌍
-              </h1>
+          <div className="relative h-[400px] rounded-3xl overflow-hidden">
+            <img src={hero} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white">
+              <h1 className="text-4xl font-bold">Explore the World 🌍</h1>
+            </div>
+          </div>
+        </SwiperSlide>
+
+        {/* ADD MORE SLIDES (IMPORTANT) */}
+        <SwiperSlide>
+          <div className="relative h-[400px] rounded-3xl overflow-hidden">
+            <img src={goa} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white">
+              <h1 className="text-4xl font-bold">Goa Beaches 🏖️</h1>
+            </div>
+          </div>
+        </SwiperSlide>
+
+        <SwiperSlide>
+          <div className="relative h-[400px] rounded-3xl overflow-hidden">
+            <img src={manali} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white">
+              <h1 className="text-4xl font-bold">Manali Mountains 🏔️</h1>
             </div>
           </div>
         </SwiperSlide>
       </Swiper>
 
-      {/* HERO SECTION */}
-      <div className="mt-10 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 
-        text-white p-10 md:p-14 rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
-
-        <div className="max-w-xl">
-          <h1 className="text-4xl md:text-5xl font-bold">
-            Plan Your Perfect Trip ✈️
-          </h1>
-        </div>
+      {/* BOOKING */}
+      <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+        {[
+          { img: flightImg, title: "Flights" },
+          { img: trainImg, title: "Trains" },
+          { img: hotelImg, title: "Hotels" },
+          { img: busImg, title: "Bus" },
+        ].map((item, i) => (
+          <div
+            key={i}
+            onClick={() =>
+              navigate(`/book?from=DEL&to=GOA&type=${item.title}`)
+            }
+            className="rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition cursor-pointer"
+          >
+            <img src={item.img} className="w-full h-40 object-cover" />
+            <div className="p-4 text-center bg-white font-semibold">
+              {item.title}
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* 🔥 UPDATED DESTINATIONS WITH BOOK BUTTON */}
+      {/* TRIPS */}
       <div className="mt-16">
         <h2 className="text-3xl font-bold text-center">Popular Trips</h2>
 
         <div className="grid md:grid-cols-3 gap-6 mt-8">
           {trips.map((trip, i) => (
-            <div
-              key={i}
-              className="rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition"
-            >
+            <div key={i} className="rounded-2xl shadow-lg hover:scale-105 transition bg-white">
               <img src={trip.img} className="w-full h-48 object-cover" />
-
               <div className="p-4">
-                <h3 className="font-bold text-lg">{trip.name}</h3>
+                <h3 className="font-bold">{trip.name}</h3>
                 <p>{trip.from} → {trip.to}</p>
                 <p>{trip.time}</p>
-                <p className="font-semibold">₹{trip.price}</p>
+                <p className="font-semibold text-blue-600">₹{trip.price}</p>
 
-                {/* ✅ BOOK BUTTON */}
                 <button
                   onClick={() => handleBook(trip)}
-                  className="mt-3 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+                  className="mt-3 w-full bg-blue-600 text-white py-2 rounded"
                 >
                   Book Now
                 </button>
@@ -103,6 +140,30 @@ const Home = () => {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* 🔍 MAP SEARCH */}
+      <div className="mt-20">
+        <h2 className="text-3xl font-bold text-center mb-6">
+          Search Location on Map 🗺️
+        </h2>
+
+        <div className="flex justify-center mb-6">
+          <input
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="Enter city..."
+            className="w-1/2 px-4 py-2 border rounded-l-lg"
+          />
+          <button className="bg-blue-600 text-white px-6 rounded-r-lg">
+            Search
+          </button>
+        </div>
+
+        <iframe
+          src={`https://www.google.com/maps?q=${location}&output=embed`}
+          className="w-full h-[400px] rounded-2xl"
+        ></iframe>
       </div>
 
     </div>
