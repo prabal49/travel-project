@@ -1,59 +1,74 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
+import indiaData from "../data/indiaData";
 
 const Budget = () => {
   const [budget, setBudget] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [stateFilter, setStateFilter] = useState("");
 
-  const handleSearch = async () => {
-    if (!budget) return alert("Enter budget first");
+  // ✅ LOAD ALL DATA ON START
+  useEffect(() => {
+    const allPlaces = indiaData.flatMap((stateObj) =>
+      stateObj.places.map((place, i) => ({
+        id: `${stateObj.state}-${i}`,
+        name: place.name,
+        state: stateObj.state,
+        avg_cost: place.cost,
+        image_url: place.image,
+        bestTime: place.bestTime,
+      }))
+    );
 
-    try {
-      setLoading(true);
+    setData(allPlaces);
+  }, []);
 
-      const API_KEY = "YOUR_API_KEY"; // 🔥 replace this
+  // 🔥 BOOKING FUNCTION
+  const handleBooking = (place) => {
+    const query = encodeURIComponent(place);
+    const url = `https://www.makemytrip.com/search/?q=${query}`;
+    window.open(url, "_blank");
+  };
 
-      const res = await axios.get(
-        `https://api.geoapify.com/v2/places?categories=commercial.supermarket&filter=rect%3A10.716463143326969%2C48.755151258420966%2C10.835314015356737%2C48.680903341613316&limit=20&apiKey=0eb7ed3bd9e14ae1a2685403bc5d6484`
-      );
+  // 🔍 SEARCH FUNCTION
+  const handleSearch = () => {
+    setLoading(true);
 
-      // ✅ Convert API data to your UI format
-      const results = res.data.features
-        .map((item, i) => {
-          const price = Math.floor(Math.random() * 20000) + 1000;
+    let results = indiaData.flatMap((stateObj) =>
+      stateObj.places.map((place, i) => ({
+        id: `${stateObj.state}-${i}`,
+        name: place.name,
+        state: stateObj.state,
+        avg_cost: place.cost,
+        image_url: place.image,
+        bestTime: place.bestTime,
+      }))
+    );
 
-          return {
-            id: i,
-            name: item.properties.name || "Beautiful Destination",
-            country: item.properties.country || "Unknown",
-            avg_cost: price,
-            image_url: `https://picsum.photos/400/300?random=${i}`,
-          };
-        })
-        // 🔥 FILTER BY BUDGET
-        .filter((item) => item.avg_cost <= budget);
-
-      setData(results);
-      setLoading(false);
-
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-      alert("Error fetching data");
+    // ✅ Budget filter
+    if (budget) {
+      results = results.filter((item) => item.avg_cost <= budget);
     }
+
+    // ✅ State filter
+    if (stateFilter) {
+      results = results.filter((item) => item.state === stateFilter);
+    }
+
+    setData(results);
+    setLoading(false);
   };
 
   return (
     <div className="min-h-screen bg-gray-100 p-10">
 
-      {/* TITLE */}
       <h1 className="text-4xl font-bold text-center mb-6 text-blue-600">
         Budget Planner 💰
       </h1>
 
       {/* SEARCH */}
-      <div className="flex justify-center gap-4 mb-8">
+      <div className="flex flex-wrap justify-center gap-4 mb-8">
+
         <input
           type="number"
           placeholder="Enter budget"
@@ -61,6 +76,17 @@ const Budget = () => {
           onChange={(e) => setBudget(e.target.value)}
           className="p-3 rounded-lg shadow-md w-64"
         />
+
+        <select
+          value={stateFilter}
+          onChange={(e) => setStateFilter(e.target.value)}
+          className="p-3 rounded-lg shadow-md"
+        >
+          <option value="">All States</option>
+          {indiaData.map((s, i) => (
+            <option key={i}>{s.state}</option>
+          ))}
+        </select>
 
         <button
           onClick={handleSearch}
@@ -99,20 +125,24 @@ const Budget = () => {
 
             <div className="p-4">
               <h2 className="text-xl font-bold">{item.name}</h2>
-              <p className="text-gray-500">{item.country}</p>
+              <p className="text-gray-500">{item.state}</p>
 
               <p className="text-green-600 font-bold mt-2">
                 ₹{item.avg_cost}
               </p>
 
               <p className="text-sm text-gray-400 mt-2">
-                Best time: Oct - March
+                Best time: {item.bestTime}
               </p>
 
               <div className="flex justify-between mt-3">
-                <button className="bg-blue-600 text-white px-3 py-1 rounded">
-                  View
+                <button
+                  onClick={() => handleBooking(item.name)}
+                  className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700"
+                >
+                  Book Now
                 </button>
+
                 <button className="bg-gray-200 px-3 py-1 rounded">
                   Save
                 </button>
