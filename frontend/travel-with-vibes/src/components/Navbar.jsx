@@ -1,87 +1,457 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-import logo from "../assets/travel.png";
+import { NavLink, useNavigate } from "react-router-dom";
+
+import {
+  Plane,
+  Wallet,
+  CloudSun,
+  Bot,
+  Ticket,
+  LogOut,
+  Menu,
+  X,
+} from "lucide-react";
+
+import logo from "../assets/logo.jpg";
 
 const Navbar = () => {
+
   const [user, setUser] = useState(null);
 
+  const [mobileMenu, setMobileMenu] = useState(false);
+
+  const navigate = useNavigate();
+
   useEffect(() => {
+
     const storedUser = localStorage.getItem("user");
+
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+
   }, []);
 
+  // LOGOUT
   const handleLogout = () => {
+
     localStorage.removeItem("user");
-    window.location.href = "/login";
+
+    navigate("/login");
   };
 
-  const linkStyle = ({ isActive }) =>
-    `transition ${isActive ? "text-blue-600 font-semibold" : "hover:text-blue-600"
-    }`;
+  // NAV STYLE
+  const navStyle = ({ isActive }) =>
+    `
+      flex
+      items-center
+      gap-2
+      px-4
+      py-2.5
+      rounded-2xl
+      transition-all
+      duration-300
+      text-sm
+      font-medium
+      whitespace-nowrap
+      ${isActive
+      ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-xl"
+      : "text-gray-300 hover:bg-white/10 hover:text-white"
+    }
+    `;
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-700">
 
-      <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
+    <>
+      {/* NAVBAR */}
+      <nav
+        className="
+          sticky
+          top-0
+          z-50
+          bg-[#0B1220]/95
+          backdrop-blur-2xl
+          border-b
+          border-white/10
+          shadow-[0_8px_30px_rgb(0,0,0,0.35)]
+        "
+      >
 
-        {/* 🔷 LOGO + BRAND */}
-        <div className="flex items-center gap-3 cursor-pointer">
-          <img
-            src={logo}
-            alt="logo"
-            className="w-10 h-10 rounded-full object-cover shadow-md ring-2 ring-blue-500"
-          />
-          <h1 className="text-xl font-semibold tracking-wide text-gray-800 dark:text-white">
-            Travel<span className="text-blue-600">Vibes</span>
-          </h1>
-        </div>
+        <div
+          className="
+            max-w-[1600px]
+            mx-auto
+            px-4
+            xl:px-8
+            h-20
+            flex
+            items-center
+            justify-between
+            gap-4
+          "
+        >
 
-        {/* 🔗 NAV LINKS */}
-        <div className="flex items-center gap-6 text-sm font-medium text-gray-700 dark:text-gray-300">
+          {/* LOGO */}
+          <div
+            onClick={() => navigate("/")}
+            className="
+              flex
+              items-center
+              gap-4
+              cursor-pointer
+              flex-shrink-0
+            "
+          >
 
-          <NavLink className={linkStyle} to="/">Home</NavLink>
-          <NavLink className={linkStyle} to="/budget">Budget</NavLink>
-          <NavLink className={linkStyle} to="/weather">Weather</NavLink>
-          <NavLink className={linkStyle} to="/assistant">AI</NavLink>
-          <NavLink className={linkStyle} to="/Book">Book</NavLink>
+            <div
+              className="
+                w-12
+                h-12
+                rounded-2xl
+                overflow-hidden
+                shadow-xl
+                ring-2
+                ring-cyan-500/30
+              "
+            >
 
-          {/* 👤 USER SECTION */}
-          {user ? (
-            <div className="flex items-center gap-3 ml-4">
-
-              {/* PROFILE BADGE */}
-              <div className="flex items-center gap-2 bg-blue-50 dark:bg-gray-800 px-3 py-1 rounded-full shadow-sm">
-                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-600 text-white text-sm font-bold">
-                  {user.email.charAt(0).toUpperCase()}
-                </div>
-                <span className="text-blue-600 text-sm font-medium">
-                  {user.email}
-                </span>
-              </div>
-
-              {/* LOGOUT */}
-              <button
-                onClick={handleLogout}
-                className="px-3 py-1 text-sm rounded-full bg-red-500 text-white hover:bg-red-600 transition shadow active:scale-95"
-              >
-                Logout
-              </button>
+              <img
+                src={logo}
+                alt="logo"
+                className="w-full h-full object-cover"
+              />
 
             </div>
-          ) : (
-            <NavLink
-              to="/login"
-              className="ml-4 px-4 py-1.5 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition shadow active:scale-95"
+
+            <div>
+
+              <h1 className="text-2xl font-black tracking-tight text-white">
+                Travel<span className="text-cyan-400">Vibes</span>
+              </h1>
+
+              <p className="text-xs text-gray-400 tracking-wide">
+                Luxury Travel Platform
+              </p>
+
+            </div>
+          </div>
+
+          {/* DESKTOP NAV */}
+          <div
+            className="
+              hidden
+              2xl:flex
+              items-center
+              gap-1
+              flex-1
+              justify-center
+              mx-6
+              min-w-0
+              bg-white/5
+              border
+              border-white/10
+              backdrop-blur-xl
+              px-3
+              py-2
+              rounded-3xl
+              shadow-2xl
+            "
+          >
+
+            <NavLink className={navStyle} to="/">
+              <Plane size={16} />
+              Home
+            </NavLink>
+
+            <NavLink className={navStyle} to="/budget">
+              <Wallet size={16} />
+              Budget
+            </NavLink>
+
+            <NavLink className={navStyle} to="/weather">
+              <CloudSun size={16} />
+              Weather
+            </NavLink>
+
+            <NavLink className={navStyle} to="/assistant">
+              <Bot size={16} />
+              AI Assistant
+            </NavLink>
+
+            <NavLink className={navStyle} to="/book">
+              <Ticket size={16} />
+              Packages
+            </NavLink>
+
+            {user && (
+              <NavLink className={navStyle} to="/my-bookings">
+                <Ticket size={16} />
+                My Bookings
+              </NavLink>
+            )}
+
+          </div>
+
+          {/* RIGHT SECTION */}
+          <div className="flex items-center gap-3 flex-shrink-0">
+
+            {user ? (
+
+              <>
+                {/* USER CARD */}
+                <div
+                  className="
+                    hidden
+                    2xl:flex
+                    items-center
+                    gap-2
+                    flex-shrink-0
+                    bg-white/5
+                    border
+                    border-white/10
+                    backdrop-blur-xl
+                    px-4
+                    py-2
+                    rounded-3xl
+                    shadow-xl
+                  "
+                >
+
+                  <div
+                    className="
+                      w-10
+                      h-10
+                      rounded-2xl
+                      bg-gradient-to-r
+                      from-cyan-500
+                      to-blue-600
+                      text-white
+                      flex
+                      items-center
+                      justify-center
+                      font-bold
+                    "
+                  >
+                    {user.email.charAt(0).toUpperCase()}
+                  </div>
+
+                  <div className="leading-tight">
+
+                    <p className="text-xs text-gray-400">
+                      Logged in as
+                    </p>
+
+                    <p className="font-semibold text-sm text-white max-w-[180px] truncate">
+                      {user.email}
+                    </p>
+
+                  </div>
+
+                </div>
+
+                {/* LOGOUT */}
+                <button
+                  onClick={handleLogout}
+                  className="
+                    hidden
+                    md:flex
+                    items-center
+                    gap-2
+                    bg-red-500/90
+                    hover:bg-red-600
+                    text-white
+                    px-4
+                    py-2.5
+                    rounded-2xl
+                    transition-all
+                    duration-300
+                    shadow-xl
+                    hover:scale-105
+                  "
+                >
+
+                  <LogOut size={16} />
+
+                  Logout
+
+                </button>
+              </>
+
+            ) : (
+
+              <button
+                onClick={() => navigate("/login")}
+                className="
+                  hidden
+                  md:block
+                  bg-gradient-to-r
+                  from-cyan-500
+                  to-blue-600
+                  hover:opacity-90
+                  text-white
+                  px-6
+                  py-2.5
+                  rounded-2xl
+                  transition-all
+                  duration-300
+                  shadow-xl
+                  hover:scale-105
+                  font-semibold
+                "
+              >
+                Login
+              </button>
+            )}
+
+            {/* MOBILE MENU */}
+            <button
+              onClick={() => setMobileMenu(!mobileMenu)}
+              className="
+                2xl:hidden
+                bg-white/10
+                border
+                border-white/10
+                p-3
+                rounded-2xl
+                text-white
+                backdrop-blur-xl
+              "
             >
-              Login
+
+              {mobileMenu ? (
+                <X size={22} />
+              ) : (
+                <Menu size={22} />
+              )}
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </nav>
+
+      {/* MOBILE MENU */}
+      {mobileMenu && (
+
+        <div
+          className="
+            2xl:hidden
+            fixed
+            top-20
+            left-4
+            right-4
+            z-40
+            bg-[#111827]/95
+            backdrop-blur-2xl
+            border
+            border-white/10
+            rounded-3xl
+            shadow-2xl
+            p-5
+            space-y-3
+          "
+        >
+
+          <NavLink
+            className={navStyle}
+            to="/"
+            onClick={() => setMobileMenu(false)}
+          >
+            <Plane size={16} />
+            Home
+          </NavLink>
+
+          <NavLink
+            className={navStyle}
+            to="/budget"
+            onClick={() => setMobileMenu(false)}
+          >
+            <Wallet size={16} />
+            Budget
+          </NavLink>
+
+          <NavLink
+            className={navStyle}
+            to="/weather"
+            onClick={() => setMobileMenu(false)}
+          >
+            <CloudSun size={16} />
+            Weather
+          </NavLink>
+
+          <NavLink
+            className={navStyle}
+            to="/assistant"
+            onClick={() => setMobileMenu(false)}
+          >
+            <Bot size={16} />
+            AI Assistant
+          </NavLink>
+
+          <NavLink
+            className={navStyle}
+            to="/book"
+            onClick={() => setMobileMenu(false)}
+          >
+            <Ticket size={16} />
+            Packages
+          </NavLink>
+
+          {user && (
+            <NavLink
+              className={navStyle}
+              to="/my-bookings"
+              onClick={() => setMobileMenu(false)}
+            >
+              <Ticket size={16} />
+              My Bookings
             </NavLink>
           )}
 
+          {!user ? (
+
+            <button
+              onClick={() => {
+                navigate("/login");
+                setMobileMenu(false);
+              }}
+              className="
+                w-full
+                bg-gradient-to-r
+                from-cyan-500
+                to-blue-600
+                text-white
+                py-3
+                rounded-2xl
+                font-semibold
+              "
+            >
+              Login
+            </button>
+
+          ) : (
+
+            <button
+              onClick={handleLogout}
+              className="
+                w-full
+                bg-red-500
+                text-white
+                py-3
+                rounded-2xl
+                font-semibold
+              "
+            >
+              Logout
+            </button>
+
+          )}
+
         </div>
-      </div>
-    </nav>
+      )}
+    </>
   );
 };
 

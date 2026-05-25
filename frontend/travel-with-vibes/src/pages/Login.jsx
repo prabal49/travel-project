@@ -1,7 +1,7 @@
 import { useState } from "react";
+import { Mail, Lock, Plane } from "lucide-react";
 
 const Login = () => {
-  const [isSignup, setIsSignup] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -11,55 +11,21 @@ const Login = () => {
       const res = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        // 🔥 SAVE USER
         localStorage.setItem("user", JSON.stringify({ email }));
 
         alert("✅ Login successful");
-
-        // 🔥 REDIRECT
         window.location.href = "/";
       } else {
         alert("❌ " + data.message);
       }
-
-    } catch (err) {
-      console.log(err);
-      alert("Server error");
-    }
-  };
-  // 🔥 HANDLE SIGNUP
-  const handleSignup = async () => {
-    if (!email || !password) {
-      alert("Please fill all fields");
-      return;
-    }
-
-    try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password })
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert("✅ " + data.message);
-        setIsSignup(false); // 🔥 switch to login after signup
-      } else {
-        alert("❌ " + data.message);
-      }
-
     } catch (err) {
       console.log(err);
       alert("Server error");
@@ -67,49 +33,63 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 px-4">
 
-      <div className="bg-white p-8 rounded-2xl shadow-xl w-96">
+      {/* LOGIN CARD */}
+      <div className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl p-8">
 
-        <h2 className="text-2xl font-bold text-center mb-6 text-black">
-          {isSignup ? "Create Account ✨" : "Welcome Back 👋"}
+        {/* LOGO */}
+        <div className="flex justify-center mb-5">
+          <div className="bg-blue-500 p-4 rounded-2xl shadow-lg">
+            <Plane className="text-white w-8 h-8" />
+          </div>
+        </div>
+
+        {/* HEADING */}
+        <h2 className="text-3xl font-bold text-center text-white mb-2">
+          Welcome Back 👋
         </h2>
 
-        <input
-          type="email"
-          placeholder="Enter email"
-          className="border border-gray-300 p-3 w-full mb-4 rounded-lg text-black placeholder-gray-500"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <p className="text-center text-gray-300 mb-8 text-sm">
+          Login to continue your travel journey
+        </p>
 
-        <input
-          type="password"
-          placeholder="Enter password"
-          className="border border-gray-300 p-3 w-full mb-4 rounded-lg text-black placeholder-gray-500"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        {/* EMAIL */}
+        <div className="relative mb-5">
+          <Mail className="absolute left-3 top-3.5 text-gray-400 w-5 h-5" />
 
+          <input
+            type="email"
+            placeholder="Enter your email"
+            className="w-full bg-white/10 border border-gray-500 text-white placeholder-gray-400 rounded-xl py-3 pl-11 pr-4 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500 transition"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        {/* PASSWORD */}
+        <div className="relative mb-6">
+          <Lock className="absolute left-3 top-3.5 text-gray-400 w-5 h-5" />
+
+          <input
+            type="password"
+            placeholder="Enter your password"
+            className="w-full bg-white/10 border border-gray-500 text-white placeholder-gray-400 rounded-xl py-3 pl-11 pr-4 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500 transition"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+
+        {/* LOGIN BUTTON */}
         <button
           onClick={(e) => {
-            e.preventDefault();   // ✅ important
-            isSignup ? handleSignup() : handleLogin();
+            e.preventDefault();
+            handleLogin();
           }}
-          className="bg-blue-600 text-white w-full py-2 rounded-lg hover:bg-blue-700 transition"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold shadow-lg transition duration-300 hover:scale-[1.02]"
         >
-          {isSignup ? "Sign Up" : "Login"}
+          Login
         </button>
-
-        {/* SWITCH */}
-        <p
-          onClick={() => setIsSignup(!isSignup)}
-          className="text-center text-sm mt-4 text-blue-600 cursor-pointer hover:underline transition"
-        >
-          {isSignup
-            ? "Already have an account? Login"
-            : "Don’t have an account? Sign up"}
-        </p>
 
       </div>
     </div>

@@ -6,11 +6,11 @@ const cors = require("cors");
 
 const app = express();
 
-// ✅ Middleware
+// ================= MIDDLEWARE =================
 app.use(cors());
 app.use(express.json());
 
-// ✅ Routes
+// ================= ROUTES =================
 const authRoutes = require("./routes/authRoutes");
 const destinationRoutes = require("./routes/destinationRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
@@ -18,21 +18,21 @@ const aiRoutes = require("./routes/aiRoutes");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/destinations", destinationRoutes);
-app.use("/api/book", bookingRoutes);
+app.use("/api/bookings", bookingRoutes);
 app.use("/api/ai", aiRoutes);
 
-// ✅ Test route
+// ================= HEALTH CHECK =================
 app.get("/", (req, res) => {
     res.send("API is running 🚀");
 });
 
-// ✅ MongoDB connection (better version)
+// ================= MONGODB CONNECTION =================
 mongoose
     .connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/prabaltravel")
     .then(() => console.log("✅ MongoDB Connected"))
     .catch((err) => console.log("❌ DB Error:", err));
 
-// ✅ Server start
+// ================= SERVER START =================
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
