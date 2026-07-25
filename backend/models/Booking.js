@@ -159,6 +159,11 @@ const bookingSchema = new mongoose.Schema(
     {
         timestamps: true,
     }
+
+);
+bookingSchema.index(
+    { createdAt: 1 },
+    { expireAfterSeconds: 900 }
 );
 
 module.exports = mongoose.model("Booking", bookingSchema);
