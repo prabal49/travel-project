@@ -54,7 +54,7 @@ export default function ConfirmBooking() {
             };
 
             const res = await fetch(
-                `https://travel-project-inao.onrender.com/api/bookings`,
+                "http://localhost:5000/api/bookings",
                 {
                     method: "POST",
 

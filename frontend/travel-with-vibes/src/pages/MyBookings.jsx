@@ -19,7 +19,7 @@ export default function MyBookings() {
             }
 
             const res = await fetch(
-                `https://travel-project-inao.onrender.com/api/bookings`
+                "http://localhost:5000/api/bookings"
             );
 
             if (!res.ok) {

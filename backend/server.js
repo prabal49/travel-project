@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
 
 // ================= MONGODB CONNECTION =================
 mongoose
-    .connect(process.env.MONGO_URI || "mongodb+srv://prashbansa68_db_user:<db_password>@travellearn.kk9ytrs.mongodb.net/?appName=TravelLearn")
+    .connect(process.env.MONGO_URI || "mongodb+srv://prashbansa68_db_user:prabal9186@travelproject.kawrfho.mongodb.net/?appName=travelproject")
     .then(() => console.log("✅ MongoDB Connected"))
     .catch((err) => console.log("❌ DB Error:", err));
 
