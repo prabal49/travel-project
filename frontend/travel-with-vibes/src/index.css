@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+/* LIGHT MODE */
+.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* DARK MODE */
+.dark {
+  background-color: #0f172a;
+  color: #ffffff;
+}
+
+/* Cards */
+.card-light {
+  background: #ffffff;
+  color: #000;
+}
+
+.card-dark {
+  background: #1e293b;
+  color: #fff;
+}
+
+body {
+  background-color: #e2ebf4;
+  /* Tailwind gray-100 */
+}
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
+}
