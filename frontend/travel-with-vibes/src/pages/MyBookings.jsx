@@ -19,7 +19,7 @@ export default function MyBookings() {
             }
 
             const res = await fetch(
-                "http://localhost:5000/api/bookings"
+                `https://travel-project-6mf4.onrender.com/api/bookings`
             );
 
             if (!res.ok) {

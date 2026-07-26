@@ -232,7 +232,7 @@ export default function Book() {
 
         try {
             const res = await fetch(
-                "http://localhost:5000/api/bookings",
+                `https://travel-project-6mf4.onrender.com/api/bookings`,
                 {
                     method: "POST",
                     headers: {

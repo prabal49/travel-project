@@ -78,7 +78,7 @@ const Login = () => {
     try {
       setLoading(true);
 
-      const res = await fetch(`${API_URL}/api/auth/login`, {
+      const res = await fetch(`https://travel-project-6mf4.onrender.com/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

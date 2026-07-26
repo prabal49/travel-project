@@ -54,7 +54,7 @@ export default function ConfirmBooking() {
             };
 
             const res = await fetch(
-                "http://localhost:5000/api/bookings",
+                `https://travel-project-6mf4.onrender.com/api/bookings`,
                 {
                     method: "POST",
 
