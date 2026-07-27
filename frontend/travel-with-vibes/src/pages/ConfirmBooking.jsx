@@ -54,7 +54,7 @@ export default function ConfirmBooking() {
             };
 
             const res = await fetch(
-                "http://localhost:5000/api/bookings",
+                `${import.meta.env.VITE_API_URL}/api/bookings`,
                 {
                     method: "POST",
 

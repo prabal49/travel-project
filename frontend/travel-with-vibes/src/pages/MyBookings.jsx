@@ -19,7 +19,7 @@ export default function MyBookings() {
             }
 
             const res = await fetch(
-                "http://localhost:5000/api/bookings"
+                `${import.meta.env.VITE_API_URL}/api/bookings`
             );
 
             if (!res.ok) {
