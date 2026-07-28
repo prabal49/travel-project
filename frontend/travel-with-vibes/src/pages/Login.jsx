@@ -10,7 +10,7 @@ const Login = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const API_URL = "http://localhost:5000";
+  const API_URL = `import.meta.env.VITE_API_URL`;
 
   // ================= REGISTER =================
 
@@ -33,7 +33,7 @@ const Login = () => {
     try {
       setLoading(true);
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
+      const res = await fetch(`${API_URL}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,19 +78,38 @@ const Login = () => {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const url = `${import.meta.env.VITE_API_URL}/api/auth/login`;
+
+      console.log("LOGIN URL:", url);
+
+      const res = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify({
           email,
           password,
         }),
       });
 
-      const data = await res.json();
+      console.log("STATUS:", res.status);
+      console.log("CONTENT TYPE:", res.headers.get("content-type"));
+
+      const text = await res.text();
+      console.log("SERVER RESPONSE:", text);
+
+      let data = {};
+
+      if (text) {
+        try {
+          data = JSON.parse(text);
+        } catch {
+          console.error("Server did not return JSON:", text);
+          alert("❌ Server returned an invalid response");
+          return;
+        }
+      }
 
       if (res.ok) {
         localStorage.setItem(
@@ -99,10 +118,9 @@ const Login = () => {
         );
 
         alert("✅ Login successful");
-
         window.location.href = "/";
       } else {
-        alert("❌ " + (data.message || "Login failed"));
+        alert("❌ " + (data.message || `Login failed (${res.status})`));
       }
     } catch (err) {
       console.error("LOGIN ERROR:", err);
